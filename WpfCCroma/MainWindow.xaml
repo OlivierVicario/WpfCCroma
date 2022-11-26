@@ -1,0 +1,70 @@
+﻿<Window x:Class="WpfCCroma.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfCCroma"
+        mc:Ignorable="d"
+        Title="MainWindow" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" >
+
+  <Grid Name="GrilleDeFond"  >
+    <Grid.RowDefinitions>
+      <RowDefinition Height="16" />
+      <RowDefinition Height="480" />
+      <RowDefinition Height="200" />
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="16" />
+      <ColumnDefinition Width="480" />
+      <ColumnDefinition Width="160" />
+    </Grid.ColumnDefinitions>
+    <Canvas Name="dessinCChro" Grid.Column="1" Grid.Row="1" Background="White" />
+    <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,16,0,0">
+      <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal"/>
+            </StackPanel>
+
+      <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Vertical">
+          <Label Content="Angle Saturation"  />
+          <Slider Name="slAngleS" Minimum="0" Maximum="360" Value="0" ValueChanged="slAngle_ValueChanged" Width="240"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical">
+          <Label Content="Contraste" Padding="15,0" VerticalAlignment="Center" />
+          <Slider Name="slContrasteMinS" Minimum="0" Maximum="100" Value="0" ValueChanged="slContrasteMinS_ValueChanged"  Width="240"/>
+          <Slider Name="slContrasteMaxS" Minimum="0" Maximum="100" Value="100" ValueChanged="slContrasteMaxS_ValueChanged"  Width="240"/>
+        </StackPanel>
+      </StackPanel>
+
+      <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Vertical">
+          <Label Content="Angle Valeur"  />
+          <Slider Name="slAngleV" Minimum="0" Maximum="360" Value="0" ValueChanged="slAngle_ValueChanged" Width="240"/>
+        </StackPanel>
+        <StackPanel Orientation="Vertical">
+          <Label Content="Contraste" Padding="15,0" VerticalAlignment="Center" />
+          <Slider Name="slContrasteMinV" Minimum="0" Maximum="100" Value="0" ValueChanged="slContrasteMinV_ValueChanged"  Width="240"/>
+          <Slider Name="slContrasteMaxV" Minimum="0" Maximum="100" Value="100" ValueChanged="slContrasteMaxV_ValueChanged"  Width="240"/>
+        </StackPanel>
+      </StackPanel>
+
+      <StackPanel Orientation="Horizontal">
+        <Label Content="Couronnes"  />
+        <Button Name="cPlus" Click="cPlus_Click" Content="+" />
+        <Button Name="cMoins" Click="cMoins_Click" Content="-" />
+        <TextBlock  Name="tBNCouronnes" Text="12" Padding="5,0" VerticalAlignment="Center" />
+        <Label Content="Fuseaux" Padding="15,0" VerticalAlignment="Center" />
+        <Button Name="fPlus" Click="fPlus_Click" Content="+" />
+        <Button Name="fMoins" Click="fMoins_Click" Content="-" />
+        <TextBlock  Name="tBNFuseaux" Text="12" Padding="5,0" VerticalAlignment="Center" />
+      </StackPanel>
+    </StackPanel>
+    <StackPanel Name="pileCouleurs" Grid.Column="2" Grid.Row="1" Margin="16,0" />
+
+    <StackPanel Grid.Column="2" Grid.Row="2" Margin="0,16"/>
+
+
+    </Grid>
+</Window>
+
+   
