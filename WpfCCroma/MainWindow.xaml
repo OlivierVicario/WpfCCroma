@@ -16,27 +16,26 @@
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="16" />
       <ColumnDefinition Width="480" />
-      <ColumnDefinition Width="160" />
+      <ColumnDefinition Width="480" />
     </Grid.ColumnDefinitions>
-    <Canvas Name="dessinCChro" Grid.Column="1" Grid.Row="1" Background="White" />
-    <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,16,0,0">
-      <StackPanel Orientation="Horizontal">
-        <StackPanel Orientation="Horizontal"/>
-            </StackPanel>
+    <Canvas Name="dessinCChro" Grid.Column="2" Grid.Row="1" Background="White" Margin="10,10,10,10" />
+    <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,16,0,0">
 
-      <StackPanel Orientation="Horizontal">
-        <StackPanel Orientation="Vertical">
-          <Label Content="Angle Saturation"  />
-          <Slider Name="slAngleS" Minimum="0" Maximum="360" Value="0" ValueChanged="slAngle_ValueChanged" Width="240"/>
-        </StackPanel>
-        <StackPanel Orientation="Vertical">
-          <Label Content="Contraste" Padding="15,0" VerticalAlignment="Center" />
-          <Slider Name="slContrasteMinS" Minimum="0" Maximum="100" Value="0" ValueChanged="slContrasteMinS_ValueChanged"  Width="240"/>
-          <Slider Name="slContrasteMaxS" Minimum="0" Maximum="100" Value="100" ValueChanged="slContrasteMaxS_ValueChanged"  Width="240"/>
-        </StackPanel>
-      </StackPanel>
 
-      <StackPanel Orientation="Horizontal">
+            <GroupBox Header="Saturation" Margin="10,10,10,10"  >
+                <StackPanel x:Name="stpanSaturation" Orientation="Vertical">
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Angle"  />
+                        <Slider Name="slAngleS" Minimum="0" Maximum="360" Value="0" ValueChanged="slAngle_ValueChanged" Width="240" HorizontalAlignment="Center" AutoToolTipPlacement="TopLeft"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <Label Content="Contraste"  VerticalAlignment="Center" />
+                        <Slider Name="slContrasteMinS" Minimum="0" Maximum="100" Value="0" ValueChanged="slContrasteMinS_ValueChanged"  Width="240" IsSelectionRangeEnabled="True" SelectionStart="0" SelectionEnd="80"/>
+                        <Slider Name="slContrasteMaxS" Minimum="0" Maximum="100" Value="100" ValueChanged="slContrasteMaxS_ValueChanged"  Width="240"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal">
         <StackPanel Orientation="Vertical">
           <Label Content="Angle Valeur"  />
           <Slider Name="slAngleV" Minimum="0" Maximum="360" Value="0" ValueChanged="slAngle_ValueChanged" Width="240"/>
