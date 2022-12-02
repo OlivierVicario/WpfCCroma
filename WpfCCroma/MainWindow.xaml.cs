@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace WpfCCroma
 {
@@ -27,16 +30,13 @@ namespace WpfCCroma
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            slContrasteMinS.Value = slContrasteMinV.Value = 0;
-            slContrasteMaxS.Value = slContrasteMaxV.Value = 100;
-            remplissageSecteurs(nFuseaux, nCouronnes, slContrasteMinS.Value, slContrasteMaxS.Value, slContrasteMinV.Value, slContrasteMaxV.Value, 0, 0);
+            rsContrasteSat.LowerValue = rsContrasteVal.LowerValue = 0;
+            rsContrasteSat.HigherValue = rsContrasteVal.HigherValue = 100;
+            remplissageSecteurs(nFuseaux, nCouronnes, rsContrasteSat.LowerValue, rsContrasteSat.HigherValue, rsContrasteVal.LowerValue, rsContrasteVal.HigherValue, 0, 0);
             FondCercleChromatique fond = new FondCercleChromatique(dessinCChro.ActualWidth, secteurs.GetLength(0), secteurs.GetLength(1));
             dessinCChro.Children.Add(fond);
             CercleChromatique cChromatique = new CercleChromatique(secteurs, dessinCChro.ActualWidth);
-
             dessinCChro.Children.Add(cChromatique);
-
-            dessinCChro.Cursor = Cursors.Cross;
         }
 
 
@@ -52,8 +52,6 @@ namespace WpfCCroma
 
             for (int f = 0; f < nFuseaux; f++)
             {
-
-
                 hS = (h + sweepAngleS) % 360;
                 if (hS < 180) s = minSaturation + (maxSaturation - minSaturation) * (hS / 180.0); else s = minSaturation + (maxSaturation - minSaturation) * ((360 - hS) / 180.0);
 
@@ -64,9 +62,7 @@ namespace WpfCCroma
                 Couleur.LCH aLCH = new Couleur.LCH(v, s, h);
                 secteurs[f, c] = Couleur.CIE.LCHtoColor(aLCH);
 
-
                 h += pasTeinte % 360;
-
             }
         }
 
@@ -76,18 +72,38 @@ namespace WpfCCroma
         {
             dessinCChro.Children.Clear();
 
-            if ((!(slContrasteMinV == null)) && (!(slAngleV == null)))
+            if ((!(rsContrasteVal == null)) && (!(slAngleV == null)))
             {
-                remplissageSecteurs(nFuseaux, nCouronnes, slContrasteMinS.Value, slContrasteMaxS.Value, slContrasteMinV.Value, slContrasteMaxV.Value, slAngleS.Value, slAngleV.Value);
+                remplissageSecteurs(nFuseaux, nCouronnes, rsContrasteSat.LowerValue, rsContrasteSat.HigherValue, rsContrasteVal.LowerValue, rsContrasteVal.HigherValue, slAngleS.Value, slAngleV.Value);
 
                 FondCercleChromatique fond = new FondCercleChromatique(dessinCChro.ActualWidth, secteurs.GetLength(0), secteurs.GetLength(1));
                 dessinCChro.Children.Add(fond);
-
-
-
                 CercleChromatique cChromatique = new CercleChromatique(secteurs, dessinCChro.ActualWidth);
-
                 dessinCChro.Children.Add(cChromatique);
+                displaySwatches(secteurs);
+            }
+        }
+
+        private void displaySwatches(Color[,] secteurs)
+        {
+            if (spSwatches != null)
+            {
+                spSwatches.Children.Clear();
+                for (int f = 0; f < nFuseaux; f++)
+                {
+                    for (int c = 0; c < nCouronnes; c++)
+                    {
+                        if (secteurs[f, c].A != 0)
+                        {
+                            Rectangle r = new Rectangle();
+                            r.Height = r.Width = 80;
+                            r.Stroke = new SolidColorBrush(Colors.Transparent);
+                            r.StrokeThickness = 10;
+                            r.Fill = new SolidColorBrush(secteurs[f, c]);
+                            spSwatches.Children.Add((Rectangle)r);
+                        }
+                    }
+                }
             }
         }
 
@@ -114,31 +130,54 @@ namespace WpfCCroma
 
         private void slAngle_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (!(slAngleS == null)) MiseAJour();
+            if (!(slAngleS == null))
+            {
+                lbAngleS.Content = Math.Round(slAngleS.Value);
+                MiseAJour();
+            }
         }
 
-        private void slContrasteMinS_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+
+
+        private void rsContrasteSat_LowerValueChanged(object sender, RoutedEventArgs e)
         {
-            if (slContrasteMaxS.Value < slContrasteMinS.Value) slContrasteMaxS.Value = slContrasteMinS.Value;
-            if (!(slContrasteMinS == null)) MiseAJour();
+            lbminS.Content = Math.Round(rsContrasteSat.LowerValue);
+            MiseAJour();
         }
 
-        private void slContrasteMaxS_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void rsContrasteSat_HigherValueChanged(object sender, RoutedEventArgs e)
         {
-            if (slContrasteMinS.Value > slContrasteMaxS.Value) slContrasteMinS.Value = slContrasteMaxS.Value;
-            if (!(slContrasteMaxS == null)) MiseAJour();
+
+            if (lbmaxS != null)
+            {
+                lbmaxS.Content = Math.Round(rsContrasteSat.HigherValue);
+                MiseAJour();
+            }
+
         }
 
-        private void slContrasteMinV_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void slAngleVal_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (slContrasteMaxV.Value < slContrasteMinV.Value) slContrasteMaxV.Value = slContrasteMinV.Value;
-            if (!(slContrasteMinV == null)) MiseAJour();
+            if (!(slAngleV == null))
+            {
+                lbAngleV.Content = Math.Round(slAngleV.Value);
+                MiseAJour();
+            }
         }
 
-        private void slContrasteMaxV_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void rsContrasteVal_HigherValueChanged(object sender, RoutedEventArgs e)
         {
-            if (slContrasteMinV.Value > slContrasteMaxV.Value) slContrasteMinV.Value = slContrasteMaxV.Value;
-            if (!(slContrasteMaxV == null)) MiseAJour();
+            if (lbmaxV != null)
+            {
+                lbmaxV.Content = Math.Round(rsContrasteVal.HigherValue);
+                MiseAJour();
+            }
+        }
+
+        private void rsContrasteVal_LowerValueChanged(object sender, RoutedEventArgs e)
+        {
+            lbminV.Content = Math.Round(rsContrasteVal.LowerValue);
+            MiseAJour();
         }
     }
 }
